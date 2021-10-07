@@ -1,0 +1,76 @@
+<div  *ngIf="error" class="alert alert-danger w-50 m-auto" role="alert">
+    <strong>An error occured</strong> <br>
+    {{error}}
+  </div>
+
+<div class="container m-auto">
+  <div class="row">
+    <div class="col-md-12 mb-5">
+      <h1 class="text-center">{{loginMode? 'Sign In ' : 'Sign Up'}} to App</h1>
+    </div>
+    <div class="col-md-5">
+
+      <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+        <div class="form-group input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa fa-envelope"></i>
+            </span>
+          </div>
+          <input type="text" class="form-control" placeholder="Enter email"
+           formControlName="email" />
+          <small class="form-text text-danger w-100"
+           *ngIf="!Form.get('email').valid && Form.get('email').touched"
+          >Please enter Email</small>
+        </div>
+        <div class=" form-group input-group mt-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa fa-lock"></i>
+            </span>
+          </div>
+          <input type="text" class="form-control" placeholder="password"
+          formControlName="password">
+          <small class="form-text  text-danger w-100"
+          *ngIf="!Form.get('password').valid && Form.get('password').touched">
+          Please enter Password</small>
+        </div>
+
+        <div class="form-group">
+          <button class="btn btn-outline-primary btn-block" type="submit">
+            {{loginMode? 'Sign In ' : 'Create Account'}}
+            </button>
+        </div>
+
+        <p class="mb-0">
+          {{loginMode? 'Don`t have account?' : 'Already have Account'}}
+            <a href="#"
+          (click)="onModeSwitch()">
+          {{loginMode? 'Create one' : 'Sign In'}}
+           </a> </p>
+        <a href="#">Forget passwords</a>
+      </form>
+    </div>
+
+    <div class="col-md-2">
+      <p class="devider text">
+        <span>Or</span>
+      </p>
+    </div>
+    <div class="col-md-5">
+      <div>
+        <h2>Go with Social</h2>
+        <P>Get started with yout social accounts</P>
+      </div>
+     <div>
+       <button class="btn btn-block btn-outline-primary">
+         <i class="fa fa-google-plus-official"></i>
+         Sign In via Google
+        </button>
+       <button class="btn btn-block btn-outline-primary">
+         <i class="fa fa-facebook-official"></i>
+         Sign In via FaceBook</button>
+     </div>
+    </div>
+  </div>
+</div>

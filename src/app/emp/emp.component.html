@@ -1,0 +1,68 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Employee Detail</h2>
+            <hr>
+            <div class="row justify-content-center">
+                <div class="col-md-8 card shadow px-3 py-3">
+                    <div class="item" *ngIf="item">
+                        <button type="button"
+                        [routerLink]="['/employee', pid]"
+                        [queryParams]="{editMode : true}"
+                        class="btn edit">
+                            <i class="fa fa-pencil btn-sm"></i>
+                        </button>
+                        <div class="avatar">
+                            <img src="assets/images/avatar.svg" width="50">
+                        </div>
+                        <div class="form-group-wrapper">
+                          <form [formGroup]="editFormData" class="form-group w-100 form-card">
+                            <div class="form-group">
+                              <label for="">Name</label>
+                              <span class="value" *ngIf="!editMode">{{item.name}}</span>
+                              <input type="text" formControlName="name" value="{{item.name}}" *ngIf="editMode"
+                              class="form-control">
+                          </div>
+
+                          <div class="form-group">
+                              <label for="">Designation</label>
+                              <span class="value" *ngIf="!editMode">{{item.designation}}</span>
+                              <input type="text" value="{{item.designation}}" formControlName="designation"
+                               *ngIf="editMode" class="form-control">
+                          </div>
+
+                          <div class="form-group">
+                              <label for="">Department</label>
+                              <span class="value" *ngIf="!editMode">{{item.dept}}</span>
+                              <input type="text" value="{{item.dept}}" *ngIf="editMode" formControlName="dept"
+                              class="form-control">
+                          </div>
+
+                          <div class="form-group">
+                              <label for="">Status</label>
+                              <span class="value" *ngIf="!editMode">{{item.status}}</span>
+                              <input type="text" value="{{item.status}}" formControlName="status"
+                              *ngIf="editMode" class="form-control">
+                          </div>
+                            <div class="w-100 btn-row text-right pt-2" *ngIf="editMode">
+                              <button class="btn btn-success mr-2"
+                              (click)="onEmpEdit(this.editFormData.value, pid)">Update Details</button>
+
+                              <button type="button" class="btn btn-outline-secondary"
+                              [routerLink]="['/employee', pid]"
+                              >Discard</button>
+                          </div>
+                          </form>
+                        </div>
+
+                        <div class="details mt-2" *ngIf="!editMode">
+                            <a routerLink="/dashboard" class="btn btn-outline-success btn-sm">
+                                <i class="fa fa-chevron-left mr-1"></i> Back to Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

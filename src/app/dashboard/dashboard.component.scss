@@ -1,0 +1,61 @@
+.employees {
+    display: flex;
+    flex-wrap: wrap;
+}
+.employees .item {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 0 10px 20px;
+    width: calc(50% - 20px);
+    padding: 10px 15px;
+    position: relative;
+}
+.employees .item .avatar {
+    float: left;
+    height: 100%;
+    margin-right: 20px;
+}
+.employees .item .avatar img {
+    width: 90px;
+}
+.employees .item span.label {
+    opacity: .6;
+    font-weight: 500;
+}
+
+
+// View Bar
+
+.view-bar a {
+    cursor: pointer;
+    color: #454545;
+    background: #fff;
+    padding: 5px 10px;
+    margin: 0 5px;
+    border: 1px solid #ddd;
+}
+
+// List View
+
+.employees.list-view .item {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.employees.list-view .item .avatar img {
+    width: 50px;
+}
+
+// Modal
+
+.modal.fade.show {
+    display: block;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.delete{
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}

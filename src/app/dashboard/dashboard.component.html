@@ -1,0 +1,102 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col"><h2>Dashboard</h2></div>
+            <div class="col ml-auto text-right">
+              <button class="btn btn-outline-success btn-sm" (click)="onAddEmployee()">Add user</button>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <div class="col-md-12">
+        <div class="view-bar d-flex align-items-center text-right bg-light rounded px-3 py-3">
+            <h5 class="mr-auto">Welcome, User</h5>
+            <a (click)="listViewActive = true"><i class="fa fa-list"></i></a>
+            <a (click)="listViewActive = false"><i class="fa fa-th-large"></i></a>
+        </div>
+        <hr>
+    </div>
+    <div class="col-md-12">
+        <div class="employees" [class.list-view]="listViewActive">
+            <div class="item" *ngFor="let item of empData; let idx = index" (click)="intapItem(item);">
+                <div class="avatar">
+                    <img src="assets/images/avatar.svg" width="50">
+                </div>
+                <div class="name">
+                   <span class="label">Name :</span> {{item.name}}
+                </div>
+                <div class="designation">
+                   <span class="label">Designation :</span> {{item.designation}}
+                </div>
+                <div class="designation">
+                   <span class="label">Department :</span> {{item.dept}}
+                </div>
+                <div class="status">
+                   <span class="label">Status : </span>
+                   <span class="badge"
+                    [ngClass]="{'badge-success': item.status =='Active', 'badge-danger' : item.status !='Active'}">
+                    {{item.status}}</span>
+                </div>
+                <div class="details" [class.mt-2]="!listViewActive">
+                    <a [routerLink]="['/employee', item.userId]" class="btn btn-outline-success btn-sm">View Employee</a>
+                    <button class="btn btn-outline-danger rounded-circle ml-1" (click)="onDeleteEmployee(item.userId)">
+                      <i class="fa fa-times"></i>
+                  </button>
+                  </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade show" [class.show]="showModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Add Employee</h5>
+            <button (click)="onCloseModal()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form [formGroup]="empForm" (ngSubmit)="onEmpSubmit()">
+            <div class="modal-body">
+                    <div class="form-group">
+                        <label>Enter Name</label>
+                        <input type="text" class="form-control" formControlName="name">
+                        <small *ngIf="!empForm.get('name').valid && empForm.get('name').touched" class="form-text text-danger">Please Enter Name.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Enter Designation</label>
+                        <input type="text" class="form-control" formControlName="designation">
+                        <small *ngIf="!empForm.get('designation').valid && empForm.get('designation').touched" class="form-text text-danger">Please Enter Designation.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Choose Department</label>
+                        <select class="custom-select" formControlName="dept">
+                            <option value="Development">Development</option>
+                            <option value="Design">Design</option>
+                            <option value="Hr">Hr</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                        <small *ngIf="!empForm.get('dept').valid && empForm.get('dept').touched"
+                        class="form-text text-danger">Please Choose Department.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Set Status</label>
+                        <select class="custom-select" formControlName="status">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" (click)="onCloseModal()" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
