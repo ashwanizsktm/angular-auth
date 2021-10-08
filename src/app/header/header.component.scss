@@ -3,13 +3,16 @@
 }
 
 .profile-popup {
-  background: #eee;
-  box-shadow: 0 0 3px #ccc;
-
+  background: #fff;
+  box-shadow: 0 0 5px lightblue;
+  padding: 0px;
   >li {
-    background-color: rgb(247, 243, 243);
+    background: #fff;
     border-bottom   : #ccc dotted 2px;
     padding         : 5px;
+    &:last-child{
+      border-bottom: none;
+    }
 
     &:hover {
       background-color: lightblue;
@@ -20,7 +23,7 @@
       color          : #000;
       text-decoration: none;
       &:hover{
-        background-color: none;
+        background-color: lightblue;
       }
     }
   }

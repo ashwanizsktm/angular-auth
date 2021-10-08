@@ -19,15 +19,17 @@
         <div class="dropdown">
           <button class="btn custom-btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
            <span>
-            <img [src]="userAvatar" alt="user-avatar"
+            <!-- {{}} -->
+            <img [src]="user.photoUrl? user.photoUrl: userAvatar" alt="user-avatar"
              width="40" height="40" class="rounded-circle user-avatar">
           </span>
           </button>
           <div class="dropdown-menu profile-popup" aria-labelledby="dropdownMenuButton">
             <li><a routerLink="dashboard" class="dropdown-item"><i class="fa fa-th-large"></i>Dashboard</a></li>
-            <li><a href="#" class="dropdown-item"><i class="fa fa-eye"></i>View Profile</a></li>
-            <li><a href="#" class="dropdown-item"><i class="fa fa-pencil"></i>Edit Profile</a></li>
-            <li><a href="#" class="dropdown-item"><i class="fa fa-eye"></i>change Password</a></li>
+            <li><a routerLink="profile" class="dropdown-item"><i class="fa fa-eye"></i>View Profile</a></li>
+            <li><a routerLink="profile" [queryParams]="{EditMode:true}"
+              class="dropdown-item"><i class="fa fa-pencil"></i>Edit Profile</a></li>
+            <li><a routerLink="change-password" class="dropdown-item"><i class="fa fa-eye"></i>change Password</a></li>
             <li><a (click)="onSignOut()" class="dropdown-item"><i class="fa fa-sign-out"></i>sign out</a></li>
           </div>
         </div>

@@ -15,9 +15,16 @@ export class AuthService {
 
   private tokenExpirationTimer : any;
   user = new BehaviorSubject<User>(null);
+  profileInfo = new BehaviorSubject({
+    displayName : '',
+    email: '',
+    photoUrl: ''
+  });
 
   signupURL = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${config.API_KEY}`;
   signinURL = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${config.API_KEY}`;
+  updateProfileURL= `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${config.API_KEY}`;
+  getProfileURL = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${config.API_KEY}`;
 
   constructor(private http: HttpClient,
     private errorservice: ErrorService,
@@ -50,7 +57,6 @@ export class AuthService {
 
   autoSignIn() {
     const userData = JSON.parse(localStorage.getItem('userData'));
-    console.log(userData);
     if(!userData){
       return;
     }
@@ -60,6 +66,7 @@ export class AuthService {
       const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
       this.autoSignOut(expirationDuration);
     }
+    this.getProfile(loggedInUser.token);
   }
 
   signOut() {
@@ -83,6 +90,68 @@ export class AuthService {
     const user = new User(email, userId, token, expirationDate);
     this.user.next(user) //storing data in user Subject..
     this.autoSignOut(expiresIn * 1000);
-    localStorage.setItem('userData', JSON.stringify(user))
+    localStorage.setItem('userData', JSON.stringify(user));
+    this.getProfile(token);
   }
+
+  updateProfile(data) {
+   return this.http.post<any>(this.updateProfileURL, {
+      idToken: data.token,
+      displayName:data.name,
+      photoUrl:data.picture,
+      returnSecureToken:true
+    }).pipe(
+      catchError(err => {
+        return this.errorservice.handleError(err);
+      })
+    )
+    }
+
+    getProfile(token) {
+     return this.http.post<any>(this.getProfileURL, {
+       idToken:token
+     }).subscribe(res => {
+       this.profileInfo.next({
+        displayName: res.users[0].displayName,
+        email: res.users[0].email,
+        photoUrl:res.users[0].photoUrl
+       })
+     })
+    }
+
+    changePassword(data) {
+     return this.http.post<any>(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=${config.API_KEY}`, {
+      idToken:data.idToken,
+      password:data.password,
+      returnSecureToken:true
+     }).pipe(
+       catchError(err => {
+         return this.errorservice.handleError(err)
+       })
+     )
+    }
+
+    forgetPassword(data) {
+      return this.http.post<any>(`https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${config.API_KEY}`, {
+        requestType:'PASSWORD_RESET',
+        email:data.email
+      }).pipe(
+        catchError(err => {
+          return this.errorservice.handleError(err)
+        })
+      )
+    }
+
+    googleSignIn(idToken){
+     return this.http.post<any>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp?key=${config.API_KEY}`, {
+        postBody:`id_token=${idToken}&providerId=google.com`,
+        requestUri:'http://localhost:4200/',
+        returnIdpCredential:true,
+        returnSecureToken:true
+      }).pipe(catchError(err => this.errorservice.handleError(err)),
+      tap(res => {
+        this.authenticatedUser(res.email, res.localId, res.idToken, +res.expiresIn);
+     }));
+    }
 }
+

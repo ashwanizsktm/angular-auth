@@ -1,1 +1,48 @@
-<p>profile works!</p>
+<form [formGroup]="profileForm" (ngSubmit)="onEmpSubmit()">
+  <div class="row justify-content-center">
+    <div class="col-md-8 card shadow px-3 py-3">
+        <div class="row">
+          <h2 class="col">Profile</h2>
+          <div class="col ml-auto text-right">
+            <button class="btn btn-success" type="button"
+            routerLink="/profile" [queryParams]="{EditMode:true}">
+              <i class="fa fa-pencil btn-sm"></i>
+              Edit Profile
+            </button>
+          </div>
+        </div>
+        <hr>
+        <div>EditMode: <span class="badge"
+               [ngClass]="{
+                 'badge-success': editMode,
+                 'badge-danger' : !editMode
+                }" >
+                {{editMode}}
+              </span>
+            </div>
+        <hr>
+        <div class="form-group">
+          <label for=""> {{editMode? 'Enter': ''}} Name</label>
+          <span class="value" *ngIf="!editMode">{{profileInfo.displayName}}</span>
+          <input *ngIf="editMode" type="text" class="form-control" formControlName="name">
+          <small *ngIf="!profileForm.get('name').valid && profileForm.get('name').touched">
+            Enter Profile Name
+          </small>
+        </div>
+        <div class="form-group">
+          <label for="">{{editMode? 'Enter Profile picture Url': 'Profile picture'}} </label>
+          <div>
+            <img *ngIf="!editMode" width ="100"src="{{profileInfo.photoUrl}}" alt="profile" />
+          </div>
+
+          <input *ngIf="editMode" type="text" class="form-control" formControlName="picture">
+          <small *ngIf="!profileForm.get('picture').valid && profileForm.get('picture').touched">Enter picture url</small>
+        </div>
+
+        <div class="btn-row" *ngIf="editMode">
+          <button type="submit" class="btn btn-primary mr-2">Save profile</button>
+          <button type="button" class="btn btn-outline-secondary" (click)="onDiscard()">Discard</button>
+        </div>
+    </div>
+  </div>
+</form>

@@ -10,6 +10,7 @@ import { AuthService } from '../appServices/auth.service';
 export class HeaderComponent implements OnInit {
   isLoggedIn = false;
   userAvatar = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/1024px-User-avatar.svg.png';
+  user:any;
   constructor(private auth: AuthService) { }
   ngOnInit(): void {
     this.auth.user.subscribe(res => {
@@ -21,6 +22,9 @@ export class HeaderComponent implements OnInit {
       // }
       // 2. way
       this.isLoggedIn = res ? true : false;
+    })
+    this.auth.profileInfo.subscribe(res => {
+      this.user = res;
     })
   }
 

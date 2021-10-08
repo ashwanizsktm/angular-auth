@@ -9,11 +9,11 @@ import { DesignUtilityService } from '../appServices/design-utility.service';
   templateUrl: './emp.component.html',
   styleUrls: ['./emp.component.scss'],
 })
+
 export class EmpComponent implements OnInit {
   item: Employee;
   editMode:any = false;
    pid:any;
-
     editFormData = new FormGroup({
     name: new FormControl(""),
     designation: new FormControl(""),

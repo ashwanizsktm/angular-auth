@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DesignUtilityService } from '../appServices/design-utility.service';
+import { AuthService } from '../appServices/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,6 +11,7 @@ import { DesignUtilityService } from '../appServices/design-utility.service';
 export class DashboardComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
+    private auth: AuthService,
     private _designUtility: DesignUtilityService) {
   }
 
@@ -17,7 +19,7 @@ export class DashboardComponent implements OnInit {
   showModal = false;
   empForm : FormGroup;
   empData;
-
+  user: any;
   ngOnInit(): void {
     this.onGetUsers();
     this.empForm = this.fb.group({
@@ -25,6 +27,10 @@ export class DashboardComponent implements OnInit {
       designation: ['', Validators.required],
       dept: ['Development', Validators.required],
       status: ['Active'],
+    })
+
+    this.auth.profileInfo.subscribe(res => {
+      this.user = res;
     })
   }
 
@@ -40,7 +46,6 @@ export class DashboardComponent implements OnInit {
         status: 'Active',
       });
     }else{
-
       let key = Object.keys(this.empForm.controls);
       // console.log(key);
 

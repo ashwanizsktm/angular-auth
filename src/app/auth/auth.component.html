@@ -48,7 +48,7 @@
           (click)="onModeSwitch()">
           {{loginMode? 'Create one' : 'Sign In'}}
            </a> </p>
-        <a href="#">Forget passwords</a>
+        <a routerLink="/forget-password">Forget passwords</a>
       </form>
     </div>
 
@@ -63,7 +63,7 @@
         <P>Get started with yout social accounts</P>
       </div>
      <div>
-       <button class="btn btn-block btn-outline-primary">
+       <button class="btn btn-block btn-outline-primary" (click)="onGoogleSignIn()">
          <i class="fa fa-google-plus-official"></i>
          Sign In via Google
         </button>

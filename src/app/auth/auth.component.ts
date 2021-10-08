@@ -5,6 +5,7 @@ import { AuthService } from '../appServices/auth.service';
 import { AuthResponse } from '../appInterface/auth-response.interface';
 import { ErrorService } from './../appServices/error.service';
 import { Router } from '@angular/router';
+import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 
 @Component({
   selector: 'app-auth',
@@ -20,9 +21,15 @@ export class AuthComponent implements OnInit {
     constructor(private fb: FormBuilder,
     private auth: AuthService,
     private errorservice: ErrorService,
-    private router: Router) { }
+    private router: Router,
+    private socialAuth: SocialAuthService) { }
 
   ngOnInit(): void {
+    this.auth.user.subscribe(res => {
+      if(res) {
+        this.router.navigate(['./dashboard']);
+      }
+    })
     this.Form = this.fb.group({
       email: ['', [ Validators.required,Validators.email]],
       password: ['', [ Validators.required,Validators.minLength(6)]],
@@ -58,5 +65,18 @@ export class AuthComponent implements OnInit {
     else{
        alert("please Enter valid credentials!")
     }
+  }
+
+  onGoogleSignIn(){
+    this.socialAuth.signIn(GoogleLoginProvider.PROVIDER_ID).then(user => {
+      console.log(user);
+      this.auth.googleSignIn(user.idToken).subscribe(
+        (res) => {
+          console.log(res)
+          this.router.navigate(['dashboard'])
+        },
+        (err) => {console.log(err)},
+        )
+    });
   }
 }
